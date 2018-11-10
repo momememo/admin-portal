@@ -1,10 +1,11 @@
 package com.baiwang.admin.portal.service.impl;
 
 import com.baiwang.admin.portal.bean.entity.User;
-import com.baiwang.admin.portal.common.constant.Param;
+import com.baiwang.admin.portal.common.constant.Constant;
 import com.baiwang.admin.portal.common.exception.BopErrorEnum;
 import com.baiwang.admin.portal.common.exception.BopException;
 import com.baiwang.admin.portal.common.util.MD5Util;
+import com.baiwang.admin.portal.common.util.RequestUtil;
 import com.baiwang.admin.portal.mapper.UserMapper;
 import com.baiwang.admin.portal.service.LoginService;
 import java.util.Arrays;
@@ -41,13 +42,13 @@ public class LoginServiceImpl implements LoginService {
     /**
      * 用户登录
      *
-     * @param requestId
      * @param user
      * @param request
      * @param response
      */
     @Override
-    public User login(String requestId, User user, HttpServletRequest request, HttpServletResponse response) {
+    public User login(User user, HttpServletRequest request, HttpServletResponse response) {
+        String requestId = RequestUtil.getRequestId();
         try {
             Assert.notNull(user, "登录信息不能为空！");
             Assert.notNull(user.getLoginName(), "登录用户名不能为空！");
@@ -61,8 +62,8 @@ public class LoginServiceImpl implements LoginService {
         if (!encrypt.equals(dbUser.getLoginPassword())) {
             throw new BopException(requestId, BopErrorEnum.BOP_INCORRECT_LOGIN_INFO);
         }
-        request.getSession().setAttribute(Param.USER, dbUser);
-        Cookie cookie = getCookie(request, Param.JSESSIONID);
+        request.getSession().setAttribute(Constant.USER, dbUser);
+        Cookie cookie = getCookie(request, Constant.JSESSIONID);
         String jsessionId = null;
         if (cookie != null) {
             jsessionId = cookie.getValue();
@@ -84,7 +85,7 @@ public class LoginServiceImpl implements LoginService {
     public void checkLogin(HttpServletRequest request, HttpServletResponse response) {
 
         String jsessionId = null;
-        Cookie cookie = getCookie(request, Param.JSESSIONID);
+        Cookie cookie = getCookie(request, Constant.JSESSIONID);
         if (cookie != null) {
             jsessionId = cookie.getValue();
         }
@@ -96,14 +97,14 @@ public class LoginServiceImpl implements LoginService {
         if (o == null) {
             throw new BopException(BopErrorEnum.BOP_ERROR_SESSION_EXPIRED);
         }
-        User user = (User) request.getSession().getAttribute(Param.USER);
+        User user = (User) request.getSession().getAttribute(Constant.USER);
         if (user == null) {
             throw new BopException(BopErrorEnum.BOP_ERROR_SESSION_EXPIRED);
         }
         String loginName = user.getLoginName();
         redisTemplate.opsForValue().set(jsessionId, loginName, 30, TimeUnit.MINUTES);
-        request.removeAttribute(Param.USER);
-        request.setAttribute(Param.USER, user);
+        request.removeAttribute(Constant.USER);
+        request.setAttribute(Constant.USER, user);
     }
 
 

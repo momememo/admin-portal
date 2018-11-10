@@ -2,6 +2,7 @@ package com.baiwang.admin.portal.service.impl;
 
 import com.baiwang.admin.portal.bean.entity.Method;
 import com.baiwang.admin.portal.bean.entity.Role;
+import com.baiwang.admin.portal.common.util.RequestUtil;
 import com.baiwang.admin.portal.mapper.RoleMapper;
 import com.baiwang.admin.portal.service.RoleService;
 import java.util.List;
@@ -26,56 +27,61 @@ public class RoleServiceImpl implements RoleService {
     /**
      * 获取Role列表
      *
-     * @param requestId
      * @return
      */
     @Override
-    public List<Role> getRoleList(String requestId) {
-        return roleMapper.selectRoleList();
+    public List<Role> getRoleList() {
+        String requestId = RequestUtil.getRequestId();
+        List<Role> roles = roleMapper.selectRoleList();
+        log.info("{} --> role list: {}", requestId, roles);
+        return roles;
+
     }
 
     /**
      * 新增角色
      *
-     * @param requestId
      * @param role
      */
     @Override
-    public void addRole(String requestId, Role role) {
+    public void addRole(Role role) {
+        String requestId = RequestUtil.getRequestId();
+        log.info("{} --> add role : {}", requestId, role);
         roleMapper.insertRole(role);
     }
 
     /**
      * 根据id获取Role
      *
-     * @param requestId
      * @param roleId
      * @return
      */
     @Override
-    public Role getRoleById(String requestId, String roleId) {
+    public Role getRoleById(String roleId) {
         return roleMapper.selectRoleById(roleId);
     }
 
     /**
      * 更新Role
      *
-     * @param requestId
      * @param role
      */
     @Override
-    public void updateRole(String requestId, Role role) {
+    public void updateRole(Role role) {
+        String requestId = RequestUtil.getRequestId();
+        log.info("{} -->update role : {}", requestId, role);
         roleMapper.updateRole(role);
     }
 
     /**
      * 删除接口
      *
-     * @param requestId
      * @param roleId
      */
     @Override
-    public void deleteRoleById(String requestId, String roleId) {
+    public void deleteRoleById(String roleId) {
+        String requestId = RequestUtil.getRequestId();
+        log.info("{} --> delete roleId : {}", requestId, roleId);
         roleMapper.deleteRoleById(roleId);
     }
 }

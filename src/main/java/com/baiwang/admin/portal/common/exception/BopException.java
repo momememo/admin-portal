@@ -10,7 +10,6 @@ import org.apache.commons.lang.StringUtils;
 public class BopException extends RuntimeException {
 
     private String requestId;
-    private String code;
     private String message;
     private Exception cause;
     private BopErrorEnum errorEnum;
@@ -31,7 +30,7 @@ public class BopException extends RuntimeException {
         this.errorEnum = errorEnum;
     }
 
-    public BopException(String requestId,  BopErrorEnum errorEnum, Exception cause) {
+    public BopException(String requestId, BopErrorEnum errorEnum, Exception cause) {
         this.requestId = requestId;
         this.cause = cause;
         this.errorEnum = errorEnum;
@@ -48,33 +47,12 @@ public class BopException extends RuntimeException {
         this.message = message;
     }
 
-    public BopException(String requestId, String code, String message) {
-        this.requestId = requestId;
-        this.code = code;
-        this.message = message;
-    }
-
-    public BopException(String requestId, String code, String message, Exception cause) {
-        this.requestId = requestId;
-        this.code = code;
-        this.message = message;
-        this.cause = cause;
-    }
-
     public String getRequestId() {
         return requestId;
     }
 
     public void setRequestId(String requestId) {
         this.requestId = requestId;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
     }
 
     @Override

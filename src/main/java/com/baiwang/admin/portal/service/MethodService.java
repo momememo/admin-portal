@@ -11,45 +11,39 @@ public interface MethodService {
 
     /**
      * 新增接口
-     * @param requestId
      * @param method
      */
-    Result addMethod(String requestId, Method method);
-
-    /**
-     * 根据id获取接口
-     * @param requestId
-     * @param methodId
-     * @return
-     */
-    Method getMethodById(String requestId, String methodId);
+    Result addMethod(Method method);
 
     /**
      * 更新method
-     * @param requestId
      * @param method
      */
-    void updateMethod(String requestId, Method method);
+    void updateMethod(Method method);
 
     /**
      * 删除接口
-     * @param requestId
      * @param methodId
      */
-    void deleteMethodById(String requestId, String methodId);
+    void deleteMethodById(String methodId);
 
     /**
      * 上传
-     * @param requestId
      * @param request
      */
-    void upload(String requestId, HttpServletRequest request);
+    void upload(HttpServletRequest request);
 
     /**
      * 分页查询list
-     * @param requestId
      * @param index
      * @param model
      */
-    void list(String requestId, Integer index, Model model);
+    void list(Integer index, Model model);
+
+    /**
+     * 去更新页面
+     * @param methodId
+     * @param model
+     */
+    void gotoUpdate(String methodId, Model model);
 }

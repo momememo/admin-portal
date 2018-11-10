@@ -1,6 +1,7 @@
 package com.baiwang.admin.portal.controller;
 
 import com.baiwang.admin.portal.bean.entity.Role;
+import com.baiwang.admin.portal.common.util.RequestUtil;
 import com.baiwang.admin.portal.service.RoleService;
 import java.util.List;
 import org.slf4j.Logger;
@@ -36,9 +37,8 @@ public class RoleController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/list")
-    public List<Role> list(@RequestParam(value = "requestId", required = false) String requestId) {
-        List<Role> roles = roleService.getRoleList(requestId);
-        log.info("{} --> role list: {}", requestId, roles);
+    public List<Role> list() {
+        List<Role> roles = roleService.getRoleList();
         return roles;
     }
 
@@ -48,33 +48,27 @@ public class RoleController extends BaseController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String add(@RequestBody Role role,
-                      @RequestParam(value = "requestId", required = false) String requestId) {
-        log.info("{} --> add role : {}", requestId, role);
-        roleService.addRole(requestId, role);
+    public String add(@RequestBody Role role) {
+        roleService.addRole(role);
         return "";
     }
 
     @RequestMapping(value = "/gotoUpdate", method = RequestMethod.POST)
-    public String gotoUpdate(@RequestParam String roleId,
-                             @RequestParam(value = "requestId", required = false) String requestId) {
+    public String gotoUpdate(@RequestParam String roleId) {
+        String requestId = RequestUtil.getRequestId();
         log.info("{} --> goto update role, roleId : {}", requestId, roleId);
         return "";
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String update(@RequestBody Role role,
-                         @RequestParam(value = "requestId", required = false) String requestId) {
-        log.info("{} -->update role : {}", requestId, role);
-        roleService.updateRole(requestId, role);
+    public String update(@RequestBody Role role) {
+        roleService.updateRole(role);
         return "";
     }
 
     @RequestMapping(value = "/delete")
-    public String delete(@RequestParam("roleId") String roleId,
-                         @RequestParam(value = "requestId", required = false) String requestId) {
-        log.info("{} --> delete roleId : {}", requestId, roleId);
-        roleService.deleteRoleById(requestId, roleId);
+    public String delete(@RequestParam("roleId") String roleId) {
+        roleService.deleteRoleById(roleId);
         return "";
     }
 

@@ -7,38 +7,33 @@ public interface RoleService {
 
     /**
      * 获取Role列表
-     * @param requestId
      * @return
      */
-    List<Role> getRoleList(String requestId);
+    List<Role> getRoleList();
 
     /**
      * 新增角色
-     * @param requestId
      * @param role
      */
-    void addRole(String requestId, Role role);
+    void addRole(Role role);
 
     /**
      * 根据id获取Role
-     * @param requestId
      * @param roleId
      * @return
      */
-    Role getRoleById(String requestId, String roleId);
+    Role getRoleById(String roleId);
 
     /**
      * 更新Role
-     * @param requestId
      * @param role
      */
-    void updateRole(String requestId, Role role);
+    void updateRole(Role role);
 
     /**
      * 删除接口
-     * @param requestId
      * @param roleId
      */
-    void deleteRoleById(String requestId, String roleId);
+    void deleteRoleById(String roleId);
 
 }

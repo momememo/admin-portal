@@ -1,11 +1,9 @@
 package com.baiwang.admin.portal.common.util;
 
 import com.baiwang.admin.portal.bean.entity.User;
-import com.baiwang.admin.portal.common.constant.Param;
+import com.baiwang.admin.portal.common.constant.Constant;
 import com.baiwang.admin.portal.common.exception.BopException;
 import javax.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
@@ -26,7 +24,7 @@ public class WebSessionUtils {
     public static User getUserInfo() {
         User user;
         try {
-            user = (User) getRequest().getSession().getAttribute(Param.USER);
+            user = (User) getRequest().getSession().getAttribute(Constant.USER);
         } catch (BopException e) {
             user = null;
         }

@@ -8,11 +8,13 @@ import com.baiwang.admin.portal.bean.result.ResultBuilder;
 import com.baiwang.admin.portal.bean.result.ResultMsg;
 import com.baiwang.admin.portal.common.exception.BopErrorEnum;
 import com.baiwang.admin.portal.common.exception.BopException;
+import com.baiwang.admin.portal.common.util.RequestUtil;
 import com.baiwang.admin.portal.common.util.WebSessionUtils;
 import com.baiwang.admin.portal.mapper.MethodMapper;
 import com.baiwang.admin.portal.mapper.RoleMapper;
 import com.baiwang.admin.portal.mapper.UserMapper;
 import com.baiwang.admin.portal.service.MethodService;
+import com.baiwang.moirai.utils.JacksonUtil;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -38,9 +40,6 @@ public class MethodServiceImpl implements MethodService {
     @Autowired
     private RoleMapper roleMapper;
 
-    @Autowired
-    private UserMapper userMapper;
-
     private Integer SIZE = 10;
 
     private static Logger log = LoggerFactory.getLogger(MethodServiceImpl.class);
@@ -49,11 +48,12 @@ public class MethodServiceImpl implements MethodService {
     /**
      * 新增接口
      *
-     * @param requestId
      * @param method
      */
     @Override
-    public Result addMethod(String requestId, Method method) {
+    public Result addMethod(Method method) {
+        String requestId = RequestUtil.getRequestId();
+        log.info("{} --> add method : {}", requestId, method);
 
         ResultBuilder builder = ResultBuilder.newResult().setRequestId(requestId);
         Result result;
@@ -82,53 +82,48 @@ public class MethodServiceImpl implements MethodService {
         return result;
     }
 
-    /**
-     * 根据id获取接口
-     *
-     * @param requestId
-     * @param methodId
-     * @return
-     */
-    @Override
-    public Method getMethodById(String requestId, String methodId) {
-        return methodMapper.selectMethodById(methodId);
-    }
 
     /**
      * 更新method
      *
-     * @param requestId
      * @param method
      */
     @Override
-    public void updateMethod(String requestId, Method method) {
+    public void updateMethod(Method method) {
+        String requestId = RequestUtil.getRequestId();
+        log.info("{} -->update method : {}", requestId, method);
         methodMapper.updateMethod(method);
     }
 
     /**
      * 删除接口
      *
-     * @param requestId
      * @param methodId
      */
     @Override
-    public void deleteMethodById(String requestId, String methodId) {
+    public void deleteMethodById(String methodId) {
+        String requestId = RequestUtil.getRequestId();
+        log.info("{} --> delete methodId : {}", requestId, methodId);
         methodMapper.deleteMethodById(methodId);
     }
 
     /**
      * 上传
      *
-     * @param requestId
      * @param request
      */
     @Override
-    public void upload(String requestId, HttpServletRequest request) {
+    public void upload(HttpServletRequest request) {
 
     }
 
+    /**
+     * 接口列表
+     * @param index
+     * @param model
+     */
     @Override
-    public void list(String requestId, Integer index, Model model) {
+    public void list(Integer index, Model model) {
 
         List<Method> methods = new ArrayList<>();
         int count = 0;
@@ -151,5 +146,23 @@ public class MethodServiceImpl implements MethodService {
         model.addAttribute("loginUser", user);
         model.addAttribute("indexPage", index);
         model.addAttribute("totalPage", total);
+    }
+
+    /**
+     * 去更新页面
+     *
+     * @param methodId
+     * @param model
+     */
+    @Override
+    public void gotoUpdate(String methodId, Model model) {
+        String requestId = RequestUtil.getRequestId();
+        log.info("{} --> goto update method, methodId : {}", requestId, methodId);
+        User user = WebSessionUtils.getUserInfo();
+        Method method = methodMapper.selectMethodById(methodId);
+        log.info("{} --> goto update method, result", JacksonUtil.beanToString(method));
+        model.addAttribute("loginUser", user);
+        model.addAttribute("method", method);
+        model.addAttribute("type222", "post");
     }
 }

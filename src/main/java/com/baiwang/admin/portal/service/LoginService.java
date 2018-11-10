@@ -8,10 +8,9 @@ public interface LoginService {
 
     /**
      * 用户登录
-     * @param requestId
      * @param user
      */
-    User login(String requestId, User user, HttpServletRequest request, HttpServletResponse response);
+    User login(User user, HttpServletRequest request, HttpServletResponse response);
 
     /**
      * 校验用户是否登录

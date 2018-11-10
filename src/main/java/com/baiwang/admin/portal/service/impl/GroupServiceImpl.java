@@ -25,11 +25,10 @@ public class GroupServiceImpl implements GroupService {
     /**
      * 获取分组列表
      *
-     * @param requestId
      * @return
      */
     @Override
-    public List<Group> getGroupList(String requestId) {
+    public List<Group> getGroupList() {
         return groupMapper.selectGroupList();
     }
 }

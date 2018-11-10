@@ -1,11 +1,9 @@
 package com.baiwang.admin.portal.common.exception;
 
-import com.baiwang.admin.portal.bean.entity.User;
 import com.baiwang.admin.portal.bean.result.Result;
 import com.baiwang.admin.portal.bean.result.ResultBuilder;
 import com.baiwang.admin.portal.bean.result.ResultMsg;
-import com.baiwang.admin.portal.common.util.WebSessionUtils;
-import java.util.UUID;
+import com.baiwang.admin.portal.common.util.RequestUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,17 +26,11 @@ public class BopExceptionHandler {
     @ExceptionHandler(BopException.class)
     public Result handleBopException(BopException e) {
 
-        String requestId = e.getRequestId();
-        if (StringUtils.isEmpty(requestId)) {
-            requestId = UUID.randomUUID().toString();
-        }
+        String requestId = RequestUtil.getRequestId();
         Exception cause = e.getCause();
-        String code;
+        String code = null;
         String message;
-
-        code = e.getCode();
         message = e.getMessage() == null ? "" : e.getMessage();
-
         if (e.getErrorEnum() != null) {
             code = e.getErrorEnum().getCode();
             message = e.getErrorEnum().getMsg() + "！" + message;
@@ -65,6 +57,8 @@ public class BopExceptionHandler {
                 .setIsSuccess(false)
                 .setResultMsg(new ResultMsg(code, message))
                 .build();
+
+        RequestUtil.removeRequestId();
         return result;
     }
 
@@ -72,8 +66,7 @@ public class BopExceptionHandler {
     @ResponseBody
     @ExceptionHandler(Exception.class)
     public Result handleException(Exception e) {
-
-        String requestId = UUID.randomUUID().toString();
+        String requestId = RequestUtil.getRequestId();
         String message = e.getMessage();
 
         StringBuffer msg = new StringBuffer(requestId);
@@ -89,6 +82,7 @@ public class BopExceptionHandler {
                 .setIsSuccess(false)
                 .setResultMsg(new ResultMsg("500", message))
                 .build();
+        RequestUtil.removeRequestId();
         return result;
     }
 }

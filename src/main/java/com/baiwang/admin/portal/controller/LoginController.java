@@ -37,10 +37,8 @@ public class LoginController extends BaseController {
     private static Logger log = LoggerFactory.getLogger(LoginController.class);
 
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    public String login(HttpServletRequest request, HttpServletResponse response, User user,
-                       @RequestParam(value = "requestId", required = false) String requestId,
-                       Model model) {
-        user = loginService.login(requestId, user, request, response);
+    public String login(HttpServletRequest request, HttpServletResponse response, User user, Model model) {
+        user = loginService.login(user, request, response);
         model.addAttribute("loginUser", user);
         return "index";
     }

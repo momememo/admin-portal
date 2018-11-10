@@ -3,6 +3,7 @@ package com.baiwang.admin.portal.controller;
 import com.baiwang.admin.portal.bean.entity.Group;
 import com.baiwang.admin.portal.bean.entity.Role;
 import com.baiwang.admin.portal.bean.entity.User;
+import com.baiwang.admin.portal.common.util.RequestUtil;
 import com.baiwang.admin.portal.service.GroupService;
 import com.baiwang.admin.portal.service.RoleService;
 import com.baiwang.admin.portal.service.UserService;
@@ -47,50 +48,42 @@ public class UserController extends BaseController {
 
     @ResponseBody
     @RequestMapping(value = "/list")
-    public List<User> list(@RequestParam(value = "requestId", required = false) String requestId) {
-        List<User> users = userService.getUserList(requestId);
-        log.info("{} --> user list: {}", requestId, users);
+    public List<User> list() {
+        List<User> users = userService.getUserList();
         return users;
     }
 
     @RequestMapping(value = "/gotoAdd")
-    public String gotoAdd(@RequestParam(value = "requestId", required = false) String requestId,
-                          Model model) {
-        List<Role> roles = roleService.getRoleList(requestId);
-        List<Group> groups = groupService.getGroupList(requestId);
+    public String gotoAdd(Model model) {
+        List<Role> roles = roleService.getRoleList();
+        List<Group> groups = groupService.getGroupList();
         model.addAttribute("roles", roles);
         model.addAttribute("groups", groups);
         return "user/register";
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String add(User user,
-                      @RequestParam(value = "requestId", required = false) String requestId) {
-        log.info("{} --> add user : {}", requestId, user);
-        userService.addUser(requestId, user);
+    public String add(User user) {
+        userService.addUser(user);
         return "";
     }
 
     @RequestMapping(value = "/gotoUpdate", method = RequestMethod.POST)
-    public String gotoUpdate(@RequestParam String roleId,
-                             @RequestParam(value = "requestId", required = false) String requestId) {
+    public String gotoUpdate(@RequestParam String roleId) {
+        String requestId = RequestUtil.getRequestId();
         log.info("{} --> goto update role, roleId : {}", requestId, roleId);
         return "";
     }
 
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String update(@RequestBody User user,
-                         @RequestParam(value = "requestId", required = false) String requestId) {
-        log.info("{} -->update user : {}", requestId, user);
-        userService.updateUser(requestId, user);
+    public String update(@RequestBody User user) {
+        userService.updateUser(user);
         return "";
     }
 
     @RequestMapping(value = "/delete")
-    public String delete(@RequestParam("userId") String userId,
-                         @RequestParam(value = "requestId", required = false) String requestId) {
-        log.info("{} --> delete userId : {}", requestId, userId);
-        userService.deleteUserById(requestId, userId);
+    public String delete(@RequestParam("userId") String userId) {
+        userService.deleteUserById(userId);
         return "";
     }
 }

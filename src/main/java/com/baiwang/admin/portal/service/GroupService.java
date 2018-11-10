@@ -10,5 +10,5 @@ public interface GroupService {
      * @param requestId
      * @return
      */
-    List<Group> getGroupList(String requestId);
+    List<Group> getGroupList();
 }

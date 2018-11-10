@@ -5,11 +5,13 @@ package com.baiwang.admin.portal.common.constant;
  * @author: liyunfei
  * @date: 2018/9/4 14:56
  */
-public interface Param {
+public interface Constant {
 
     String USER = "user";
 
     String JSESSIONID = "JSESSIONID";
 
     String TOKEN = "token";
+
+    String REQUEST_ID = "requestId";
 }
