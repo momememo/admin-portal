@@ -18,7 +18,7 @@ public interface LoginService {
      * @param request
      * @param response
      */
-    void checkLogin(HttpServletRequest request, HttpServletResponse response);
+    Result checkLogin(HttpServletRequest request, HttpServletResponse response);
 
     /**
      * 用户退出

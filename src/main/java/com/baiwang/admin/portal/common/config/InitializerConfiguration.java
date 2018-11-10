@@ -17,17 +17,18 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 public class InitializerConfiguration extends WebMvcConfigurationSupport {
 
 
-    //@Bean
+    @Bean
     public FilterRegistrationBean filterRegistration() {
         RequestFilter requestFilter = new RequestFilter();
         FilterRegistrationBean registration = new FilterRegistrationBean(requestFilter);
-        //registration.addUrlPatterns("*");
+        registration.addUrlPatterns("/method/*");
         return registration;
     }
 
     @Override
     protected void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static/**").addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX+"/static/");
+        registry.addResourceHandler("/static/**")
+                .addResourceLocations(ResourceUtils.CLASSPATH_URL_PREFIX + "/static/");
         super.addResourceHandlers(registry);
     }
 

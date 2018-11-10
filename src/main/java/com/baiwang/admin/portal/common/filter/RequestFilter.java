@@ -1,5 +1,6 @@
 package com.baiwang.admin.portal.common.filter;
 
+import com.baiwang.admin.portal.bean.result.Result;
 import com.baiwang.admin.portal.service.LoginService;
 import java.io.IOException;
 import javax.servlet.Filter;
@@ -23,6 +24,20 @@ public class RequestFilter implements Filter {
 
     private LoginService loginService;
 
+    String THE_CONTENT_TYPE = "text/json; charset=utf-8";
+
+    @Override
+    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+        HttpServletRequest request = (HttpServletRequest) req;
+        HttpServletResponse response = (HttpServletResponse) resp;
+        Result result = loginService.checkLogin(request, response);
+        if (result.isSuccess()) {
+            chain.doFilter(request, response);
+        }
+        response.setContentType(THE_CONTENT_TYPE);
+        response.getWriter().write("会话失效，请重新登录！");
+    }
+
     @Override
     public void init(FilterConfig filterConfig) {
         ServletContext sc = filterConfig.getServletContext();
@@ -32,14 +47,6 @@ public class RequestFilter implements Filter {
             loginService = cxt.getBean(LoginService.class);
         }
 
-    }
-
-    @Override
-    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
-        HttpServletRequest request = (HttpServletRequest) req;
-        HttpServletResponse response = (HttpServletResponse) resp;
-        loginService.checkLogin(request, response);
-        chain.doFilter(request, response);
     }
 
     @Override

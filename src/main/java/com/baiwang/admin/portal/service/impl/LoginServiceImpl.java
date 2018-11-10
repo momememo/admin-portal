@@ -18,6 +18,7 @@ import java.util.concurrent.TimeUnit;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,8 +34,6 @@ import org.springframework.stereotype.Service;
 @Service
 public class LoginServiceImpl implements LoginService {
 
-    @Autowired
-    private RedisTemplate redisTemplate;
 
     @Autowired
     private UserMapper userMapper;
@@ -61,14 +60,6 @@ public class LoginServiceImpl implements LoginService {
         }
         // 保存登录信息
         request.getSession().setAttribute(Constant.SESSION_USER, dbUser);
-        Cookie cookie = getCookie(request, Constant.JSESSIONID);
-        String jsessionId = null;
-        if (cookie != null) {
-            jsessionId = cookie.getValue();
-        }
-        if (StringUtils.isNotBlank(jsessionId)) {
-            redisTemplate.opsForValue().set(jsessionId, loginName, 30, TimeUnit.MINUTES);
-        }
         return builder.setModel(dbUser).buildSuccess();
 
     }
@@ -80,29 +71,16 @@ public class LoginServiceImpl implements LoginService {
      * @param response
      */
     @Override
-    public void checkLogin(HttpServletRequest request, HttpServletResponse response) {
-
-        String jsessionId = null;
-        Cookie cookie = getCookie(request, Constant.JSESSIONID);
-        if (cookie != null) {
-            jsessionId = cookie.getValue();
+    public Result checkLogin(HttpServletRequest request, HttpServletResponse response) {
+        String requestId = RequestUtil.getRequestId();
+        ResultBuilder builder = ResultBuilder.newResult().setRequestId(requestId);
+        Object loginUser = request.getSession().getAttribute(Constant.SESSION_USER);
+        if (loginUser == null) {
+            return builder.buildError();
         }
-        if (jsessionId == null) {
-            throw new BopException(BopErrorEnum.BOP_INCORRECT_JESSIONID);
-        }
-
-        Object o = redisTemplate.opsForValue().get(jsessionId);
-        if (o == null) {
-            throw new BopException(BopErrorEnum.BOP_ERROR_SESSION_EXPIRED);
-        }
-        User user = (User) request.getSession().getAttribute(Constant.USER);
-        if (user == null) {
-            throw new BopException(BopErrorEnum.BOP_ERROR_SESSION_EXPIRED);
-        }
-        String loginName = user.getLoginName();
-        redisTemplate.opsForValue().set(jsessionId, loginName, 30, TimeUnit.MINUTES);
-        request.removeAttribute(Constant.USER);
-        request.setAttribute(Constant.USER, user);
+        request.getSession().removeAttribute(Constant.SESSION_USER);
+        request.getSession().setAttribute(Constant.SESSION_USER, loginUser);
+        return builder.buildSuccess();
     }
 
     /**

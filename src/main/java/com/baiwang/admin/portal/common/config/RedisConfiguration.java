@@ -7,13 +7,14 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 
 
 @Configuration
-@EnableRedisHttpSession(maxInactiveIntervalInSeconds = 3600)
+@EnableRedisHttpSession()
 public class RedisConfiguration {
 
     @Value("${spring.redis.host}")
@@ -45,8 +46,15 @@ public class RedisConfiguration {
         template.setConnectionFactory(jedisConnectionFactory());
         template.setKeySerializer(new StringRedisSerializer());
         template.setValueSerializer(new FastJsonRedisSerializer<>(Object.class));
-        template.setHashKeySerializer(new FastJsonRedisSerializer<>(Object.class));
-        template.setHashValueSerializer(new FastJsonRedisSerializer<>(Object.class));
         return template;
+    }
+
+    /**
+     * spring session serializer
+     * @return
+     */
+    @Bean
+    public RedisSerializer springSessionDefaultRedisSerializer() {
+        return new FastJsonRedisSerializer<>(Object.class);
     }
 }
