@@ -46,4 +46,10 @@ public interface MethodService {
      * @param model
      */
     void gotoUpdate(String methodId, Model model);
+
+    /**
+     * 去添加页面
+     * @param model
+     */
+    void gotoAdd(Model model);
 }

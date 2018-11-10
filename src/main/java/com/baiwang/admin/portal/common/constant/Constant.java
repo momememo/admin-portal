@@ -16,4 +16,6 @@ public interface Constant {
     String TOKEN = "token";
 
     String REQUEST_ID = "requestId";
+
+    String METHOD = "method";
 }

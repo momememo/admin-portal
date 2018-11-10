@@ -63,7 +63,7 @@
         select * from bop_admin_method bam where bam.method_id = #{methodId} and deleted = 0;
     </select>
 
-    <select id="selectMethodByName" resultMap="methodMap">
+    <select id="selectMethodByMethodName" resultMap="methodMap">
         select * from bop_admin_method bam where bam.method = #{method} and deleted = 0;
     </select>
 

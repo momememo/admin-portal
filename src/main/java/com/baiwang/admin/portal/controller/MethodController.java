@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @Description: 接口控制器
@@ -44,11 +45,11 @@ public class MethodController extends BaseController {
 
     @RequestMapping(value = "/gotoAdd")
     public String gotoAdd(Model model) {
-        User user = WebSessionUtils.getUserInfo();
-        model.addAttribute("loginUser", user);
+        methodService.gotoAdd(model);
         return "method/register";
     }
 
+    @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public Result add(@Valid MethodAddRequest method, BindingResult bindingResult) {
         validateBindingResult(bindingResult);

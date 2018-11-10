@@ -59,6 +59,8 @@ public class BopExceptionHandler {
         // 输出错误日志
         if (cause != null) {
             log.error(msg.toString(), cause);
+        } else if (model != null) {
+            log.error(msg.toString());
         } else {
             log.error(msg.toString(), e);
         }

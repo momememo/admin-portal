@@ -1,18 +1,21 @@
 package com.baiwang.admin.portal.service.impl;
 
+import com.baiwang.admin.portal.bean.entity.Group;
 import com.baiwang.admin.portal.bean.entity.Method;
 import com.baiwang.admin.portal.bean.entity.Role;
 import com.baiwang.admin.portal.bean.entity.User;
 import com.baiwang.admin.portal.bean.result.Result;
 import com.baiwang.admin.portal.bean.result.ResultBuilder;
 import com.baiwang.admin.portal.bean.result.ResultMsg;
+import com.baiwang.admin.portal.common.constant.Constant;
+import com.baiwang.admin.portal.common.exception.BindingError;
 import com.baiwang.admin.portal.common.exception.BopErrorEnum;
 import com.baiwang.admin.portal.common.exception.BopException;
 import com.baiwang.admin.portal.common.util.RequestUtil;
 import com.baiwang.admin.portal.common.util.WebSessionUtils;
+import com.baiwang.admin.portal.mapper.GroupMapper;
 import com.baiwang.admin.portal.mapper.MethodMapper;
 import com.baiwang.admin.portal.mapper.RoleMapper;
-import com.baiwang.admin.portal.mapper.UserMapper;
 import com.baiwang.admin.portal.service.MethodService;
 import com.baiwang.moirai.utils.JacksonUtil;
 import java.util.ArrayList;
@@ -24,6 +27,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 /**
@@ -40,17 +44,19 @@ public class MethodServiceImpl implements MethodService {
     @Autowired
     private RoleMapper roleMapper;
 
+    @Autowired
+    private GroupMapper groupMapper;
+
     private Integer SIZE = 10;
 
     private static Logger log = LoggerFactory.getLogger(MethodServiceImpl.class);
-
 
     /**
      * 新增接口
      *
      * @param method
      */
-    @Override
+    @Override @Transactional
     public Result addMethod(Method method) {
         String requestId = RequestUtil.getRequestId();
         log.info("{} --> add method : {}", requestId, method);
@@ -61,7 +67,8 @@ public class MethodServiceImpl implements MethodService {
         msg.setSuccessMessage("接口添加成功！");
         Method m1 = methodMapper.selectMethodByMethodName(method.getMethod());
         if (m1 != null) {
-            throw new BopException(BopErrorEnum.BOP_INCORRECT_LOGIN_INFO);
+            List<BindingError> errors = RequestUtil.customBindingError(Constant.METHOD, "该method名称已经存在！");
+            throw new BopException(BopErrorEnum.BOP_DUPLICATE_METHOD_NAME, errors);
         }
 
         if (method.getMethod() == null) {
@@ -81,6 +88,7 @@ public class MethodServiceImpl implements MethodService {
         }
         return result;
     }
+
 
 
     /**
@@ -167,5 +175,18 @@ public class MethodServiceImpl implements MethodService {
         model.addAttribute("loginUser", user);
         model.addAttribute("method", method);
         model.addAttribute("type222", "post");
+    }
+
+    /**
+     * 去添加页面
+     *
+     * @param model
+     */
+    @Override
+    public void gotoAdd(Model model) {
+        User user = WebSessionUtils.getUserInfo();
+        List<Group> groups = groupMapper.selectGroupList();
+        model.addAttribute("groups", groups);
+        model.addAttribute(Constant.SESSION_USER, user);
     }
 }

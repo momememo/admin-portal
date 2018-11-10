@@ -33,9 +33,10 @@ public class RequestFilter implements Filter {
         Result result = loginService.checkLogin(request, response);
         if (result.isSuccess()) {
             chain.doFilter(request, response);
+        } else {
+            response.setContentType(THE_CONTENT_TYPE);
+            response.getWriter().write("会话失效，请重新登录！");
         }
-        response.setContentType(THE_CONTENT_TYPE);
-        response.getWriter().write("会话失效，请重新登录！");
     }
 
     @Override
