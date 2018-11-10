@@ -8,6 +8,7 @@ import com.baiwang.admin.portal.common.exception.BopErrorEnum;
 import com.baiwang.admin.portal.common.exception.BopException;
 import com.baiwang.admin.portal.common.util.MD5Util;
 import com.baiwang.admin.portal.common.util.RequestUtil;
+import com.baiwang.admin.portal.common.util.WebSessionUtils;
 import com.baiwang.admin.portal.mapper.UserMapper;
 import com.baiwang.admin.portal.service.LoginService;
 import java.util.Arrays;
@@ -102,6 +103,18 @@ public class LoginServiceImpl implements LoginService {
         redisTemplate.opsForValue().set(jsessionId, loginName, 30, TimeUnit.MINUTES);
         request.removeAttribute(Constant.USER);
         request.setAttribute(Constant.USER, user);
+    }
+
+    /**
+     * 用户退出
+     *
+     * @return
+     */
+    @Override
+    public Result logout(HttpServletRequest request) {
+        String requestId = RequestUtil.getRequestId();
+        request.getSession().invalidate();
+        return ResultBuilder.newResult().setRequestId(requestId).buildSuccess();
     }
 
 

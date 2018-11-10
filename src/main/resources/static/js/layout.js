@@ -1,31 +1,17 @@
 $(document).ready(function () {
-    document.onkeydown=keyListener;
-
 
 });
 
-function keyListener(e){
-    // 当按下回车键，执行我们的代码
-    if(e.keyCode == 13){
-        login();
-    }
-}
-
-function login() {
+function logout() {
     $.ajax({
         //几个参数需要注意一下
-        type: "POST",//方法类型
+        type: "GET",//方法类型
         dataType: "json",//预期服务器返回的数据类型
-        url: "/login",//url
-        data: $('#formLogin').serialize(),
+        url: "/logout",//url
         success: function (result) {
             console.log(JSON.stringify(result));
             if (result.success == true) {
-                var user = result.model;
-                alert(user.username);
-                window.location.href="/index";
             } else {
-                // var msg = result.message.errorMessage;
                 var msg = "";
                 if (result.model != null) {
                     var errors = result.model;
@@ -37,7 +23,7 @@ function login() {
                 }
                 alert(msg);
             }
-            ;
+            window.location.href="/";
         },
         error: function () {
             alert("系统异常！");

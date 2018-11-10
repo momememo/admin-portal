@@ -50,6 +50,13 @@ public class LoginController extends BaseController {
         return result;
     }
 
+    @ResponseBody
+    @RequestMapping(value = "logout", method = RequestMethod.GET)
+    public Result login(HttpServletRequest request) {
+        Result result = loginService.logout(request);
+        return result;
+    }
+
     @RequestMapping(value = "index", method = RequestMethod.GET)
     public String login(Model model) {
         User userInfo = WebSessionUtils.getUserInfo();
