@@ -2,6 +2,7 @@ package com.baiwang.admin.portal.bean.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import java.util.Date;
+import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @Description: Method
@@ -23,7 +24,9 @@ public class Method {
 
     private String requestName; // 请求bean名称
     private String responseName; // 响应bean名称
+    @NotEmpty(message = "请求服务器地址不能为空")
     private String requestHost; // 请求服务器地址， 如果为Eureka调用，该值为 服务ID
+    @NotEmpty(message = "接口地址不能为空")
     private String contextPath; // 接口地址
     private String requestUrl; // url
     private String docUrl; // 文档地址，不带后缀

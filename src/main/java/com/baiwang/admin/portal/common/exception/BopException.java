@@ -13,6 +13,7 @@ public class BopException extends RuntimeException {
     private String message;
     private Exception cause;
     private BopErrorEnum errorEnum;
+    private Object data;
 
     public BopException() {
     }
@@ -21,8 +22,18 @@ public class BopException extends RuntimeException {
         this.message = message;
     }
 
+    public BopException(String message, Object data) {
+        this.message = message;
+        this.data = data;
+    }
+
     public BopException(BopErrorEnum errorEnum) {
         this.errorEnum = errorEnum;
+    }
+
+    public BopException(BopErrorEnum errorEnum, Object data) {
+        this.errorEnum = errorEnum;
+        this.data = data;
     }
 
     public BopException(String requestId, BopErrorEnum errorEnum) {
@@ -79,6 +90,14 @@ public class BopException extends RuntimeException {
 
     public void setErrorEnum(BopErrorEnum errorEnum) {
         this.errorEnum = errorEnum;
+    }
+
+    public Object getData() {
+        return data;
+    }
+
+    public void setData(Object data) {
+        this.data = data;
     }
 
     public String getErrorMsg() {

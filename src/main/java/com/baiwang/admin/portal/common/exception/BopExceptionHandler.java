@@ -4,9 +4,11 @@ import com.baiwang.admin.portal.bean.result.Result;
 import com.baiwang.admin.portal.bean.result.ResultBuilder;
 import com.baiwang.admin.portal.bean.result.ResultMsg;
 import com.baiwang.admin.portal.common.util.RequestUtil;
+import com.baiwang.moirai.utils.JacksonUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,7 +31,13 @@ public class BopExceptionHandler {
         String requestId = RequestUtil.getRequestId();
         Exception cause = e.getCause();
         String code = null;
+        Object model = null;
         String message;
+
+        if (e.getData() != null) {
+            model = e.getData();
+        }
+
         message = e.getMessage() == null ? "" : e.getMessage();
         if (e.getErrorEnum() != null) {
             code = e.getErrorEnum().getCode();
@@ -44,6 +52,10 @@ public class BopExceptionHandler {
         if (!StringUtils.isEmpty(message)) {
             msg.append(" errorMsg: ").append(message);
         }
+        if (model != null) {
+            msg.append(" errorData:").append(JacksonUtil.beanToString(model));
+        }
+
         // 输出错误日志
         if (cause != null) {
             log.error(msg.toString(), cause);
@@ -56,6 +68,7 @@ public class BopExceptionHandler {
                 .setRequestId(requestId)
                 .setIsSuccess(false)
                 .setResultMsg(new ResultMsg(code, message))
+                .setModel(model)
                 .build();
 
         RequestUtil.removeRequestId();
@@ -63,12 +76,10 @@ public class BopExceptionHandler {
     }
 
 
-    @ResponseBody
     @ExceptionHandler(Exception.class)
-    public Result handleException(Exception e) {
+    public String handleException(Exception e, Model model) {
         String requestId = RequestUtil.getRequestId();
         String message = e.getMessage();
-
         StringBuffer msg = new StringBuffer(requestId);
         msg.append(" --> BopException: ");
         if (!StringUtils.isEmpty(message)) {
@@ -83,6 +94,7 @@ public class BopExceptionHandler {
                 .setResultMsg(new ResultMsg("500", message))
                 .build();
         RequestUtil.removeRequestId();
-        return result;
+        model.addAttribute("", result);
+        return "error";
     }
 }
