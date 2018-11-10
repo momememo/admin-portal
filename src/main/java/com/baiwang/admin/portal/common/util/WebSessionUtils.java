@@ -24,7 +24,7 @@ public class WebSessionUtils {
     public static User getUserInfo() {
         User user;
         try {
-            user = (User) getRequest().getSession().getAttribute(Constant.USER);
+            user = (User) getRequest().getSession().getAttribute(Constant.SESSION_USER);
         } catch (BopException e) {
             user = null;
         }

@@ -1,6 +1,8 @@
 package com.baiwang.admin.portal.service.impl;
 
 import com.baiwang.admin.portal.bean.entity.User;
+import com.baiwang.admin.portal.bean.result.Result;
+import com.baiwang.admin.portal.bean.result.ResultBuilder;
 import com.baiwang.admin.portal.common.constant.Constant;
 import com.baiwang.admin.portal.common.exception.BopErrorEnum;
 import com.baiwang.admin.portal.common.exception.BopException;
@@ -21,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 /**
  * @Description:
@@ -47,22 +48,18 @@ public class LoginServiceImpl implements LoginService {
      * @param response
      */
     @Override
-    public User login(User user, HttpServletRequest request, HttpServletResponse response) {
+    public Result login(User user, HttpServletRequest request, HttpServletResponse response) {
         String requestId = RequestUtil.getRequestId();
-        try {
-            Assert.notNull(user, "登录信息不能为空！");
-            Assert.notNull(user.getLoginName(), "登录用户名不能为空！");
-            Assert.notNull(user.getLoginPassword(), "登录用户密码不能为空！");
-        } catch (Exception e) {
-            throw new BopException(requestId, BopErrorEnum.BOP_MISSING_PARAM, e.getMessage());
-        }
+        ResultBuilder builder = ResultBuilder.newResult().setRequestId(requestId);
+        // 验证登录
         String loginName = user.getLoginName();
         User dbUser = userMapper.selectUserByLoginName(loginName);
         String encrypt = MD5Util.encrypt(user.getLoginPassword());
-        if (!encrypt.equals(dbUser.getLoginPassword())) {
+        if (dbUser == null || !encrypt.equals(dbUser.getLoginPassword())) {
             throw new BopException(requestId, BopErrorEnum.BOP_INCORRECT_LOGIN_INFO);
         }
-        request.getSession().setAttribute(Constant.USER, dbUser);
+        // 保存登录信息
+        request.getSession().setAttribute(Constant.SESSION_USER, dbUser);
         Cookie cookie = getCookie(request, Constant.JSESSIONID);
         String jsessionId = null;
         if (cookie != null) {
@@ -71,7 +68,7 @@ public class LoginServiceImpl implements LoginService {
         if (StringUtils.isNotBlank(jsessionId)) {
             redisTemplate.opsForValue().set(jsessionId, loginName, 30, TimeUnit.MINUTES);
         }
-        return dbUser;
+        return builder.setModel(dbUser).buildSuccess();
 
     }
 

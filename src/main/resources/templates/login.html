@@ -10,6 +10,7 @@
     <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
     <script src="../static/js/jquery-1.10.2.min.js"></script>
     <script src="../static/js/bootstrap.js"></script>
+    <script src="../static/js/login.js"></script>
 </head>
 <body>
 <div class="container">
@@ -33,16 +34,16 @@
 
         <div class="panel panel-default">
             <div class="panel-body">
-                <form class="col-md-offset-5" action="/login" method="post">
+                <form  id="formLogin" class="col-md-offset-5" action="/login" method="post">
                     <div class="col-md-4">
-                        <input type="text" placeholder="username" class="form-control" name="loginName"
+                        <input type="text" placeholder="login name" class="form-control" name="loginName"
                                autofocus="autofocus"/>
                     </div>
                     <div class="col-md-4">
                         <input type="password" placeholder="password" class="form-control" name="loginPassword"/>
                     </div>
                     <div class="col-md-2">
-                        <input type="submit" class="form-control btn-primary button" value="Login"/>
+                        <input type="button" class="form-control btn-primary button" onclick="login()" value="Login"/>
                     </div>
                     <div class="col-md-2">
                         <a href="/user/gotoAdd"><input id="register" type="button" value="Register"

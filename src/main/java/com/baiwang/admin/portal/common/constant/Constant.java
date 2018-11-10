@@ -9,6 +9,8 @@ public interface Constant {
 
     String USER = "user";
 
+    String SESSION_USER = "loginUser";
+
     String JSESSIONID = "JSESSIONID";
 
     String TOKEN = "token";
