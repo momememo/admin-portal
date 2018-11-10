@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baiwang.admin.portal.mapper.RoleMapper">
+
+    <resultMap type="com.baiwang.admin.portal.bean.entity.Role" id="roleMap">
+        <id property="roleId" column="role_id"/>
+        <result property="roleName" column="role_name"/>
+        <result property="roleType" column="role_type"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+
+    <select id="selectRoleList" resultMap="roleMap" >
+        select * from bop_admin_role bam where deleted = 0;
+    </select>
+
+    <insert id="insertRole"  parameterType="Role">
+        insert into bop_admin_role(role_name, description) values (#{roleName}, #{description})
+    </insert>
+
+    <select id="selectRoleById" resultMap="roleMap" parameterType="integer">
+        select * from bop_admin_role bar where bar.role_id = #{roleId} and bar.deleted = 0;
+    </select>
+
+    <update id="updateRole" parameterType="Role">
+        update bop_admin_role bar
+        <set>
+            <if test='roleName != null and roleName != ""'>
+                bar.role_name = #{roleName, jdbcType = VARCHAR}
+            </if>
+            <if test='description != null and description != ""'>
+                bar.description = #{description, jdbcType = VARCHAR}
+            </if>
+        </set>
+        where bar.role_id = #{role_id} and bar.deleted = 0
+    </update>
+
+    <update id="deleteRoleById" parameterType="integer">
+        update bop_admin_role bar set bar.deleted = 1 where bar.role_id = #{roleId};
+    </update>
+
+</mapper>

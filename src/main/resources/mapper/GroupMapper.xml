@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baiwang.admin.portal.mapper.GroupMapper">
+
+    <resultMap type="com.baiwang.admin.portal.bean.entity.Group" id="groupMap">
+        <id property="groupId" column="group_id"/>
+        <result property="groupName" column="group_name"/>
+        <result property="description" column="description"/>
+    </resultMap>
+
+
+    <select id="selectGroupList" resultMap="groupMap" >
+        select * from bop_admin_group bam where deleted = 0;
+    </select>
+
+    <insert id="insertGroup"  parameterType="Group">
+        insert into bop_admin_group(group_name, description) values (#{group.groupName}, #{group.description})
+    </insert>
+
+    <select id="selectgroupById" resultMap="groupMap" parameterType="integer">
+        select * from bop_admin_group bag where bag.group_id = #{groupId} and bag.deleted = 0;
+    </select>
+
+    <update id="updateGroup" parameterType="Group">
+        update bop_admin_group bag
+        <set>
+            <if test='groupName != null and groupName != ""'>
+                bag.group_name = #{groupName, jdbcType = VARCHAR}
+            </if>
+            <if test='description != null and description != ""'>
+                bag.description = #{description, jdbcType = VARCHAR}
+            </if>
+        </set>
+        where bag.group_id = #{group_id} and bag.deleted = 0
+    </update>
+
+    <update id="deleteGroupById" parameterType="integer">
+        update bop_admin_group bag set bag.deleted = 1 where bag.group_id = #{groupId};
+    </update>
+
+</mapper>

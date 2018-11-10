@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title> ISP 接口注册 </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="shortcut icon" href="../../static/favicon.ico" type="image/x-icon" />
+    <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+    <script src="../../static/js/jquery-1.10.2.min.js"></script>
+    <script src="../../static/js/bootstrap.js"></script>
+    <script src="../../static/js/method/register.js"></script>
+
+</head>
+<body>
+<div class="container" th:replace="layout :: header(username=${loginUser.username},roleId=${loginUser.roleId}) "></div>
+<div class="container">
+    <div class="row">
+        <form id="formRegister" class="col-md-6" action="/method/add" method="post">
+            <input type="hidden" name="creator" th:value="${loginUser.username}"/>
+
+            <div th:if="${loginUser.roleId ne 1}" class="form-group">
+                <label>Method</label>
+                <input type="text" class="form-control" name="method"
+                       th:placeholder="接口名称，审核时由管理员指定分配，审核通过后展示" disabled="disabled"/>
+            </div>
+
+            <div th:if="${loginUser.roleId eq 1}" class="form-group">
+                <label>Method</label>
+                <input type="text" class="form-control" name="method"
+                       th:placeholder="接口名称，即开放平台对外的method名称"/>
+            </div>
+
+            <div class="form-group">
+                <label for="groupName">接口分组</label>
+                <input type="text" class="form-control" id="groupName" name="groupName"
+                       placeholder="接口分组，接口属于哪个业务层"/>
+            </div>
+            <div class="form-group">
+                <label for="description">接口描述</label>
+                <input type="text" class="form-control" id="description" name="description" placeholder="请输入接口描述信息..."/>
+            </div>
+            <div class="form-group">
+                <label for="taxPropertyName">税号参数名</label>
+                <input type="text" class="form-control" id="taxPropertyName" name="taxPropertyName"
+                       placeholder="如需税号校验，请输入税号在请求体中对应的字段名，若无需校验，忽略此项"/>
+            </div>
+
+            <div class="form-group">
+                <label for="taxPropertyName">Headers</label>
+                <input type="text" class="form-control" id="passedHeaders" name="passedHeaders"
+                       placeholder="若需要公共参数传递至服务层，则填写参数名（逗号间隔），若无需传递，忽略此项"/>
+            </div>
+
+            <div class="form-group">
+                <label>接口类型</label>
+                <!--<input type="text" class="form-control" id="serviceInvocation" name="loginName"
+                       placeholder="http 或 eureka"/>-->
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="type" value="POST" checked="checked"/> POST
+                    </label>
+                    <label>
+                        <input type="radio" name="type" value="GET"/> GET
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>调用方式</label>
+                <!--<input type="text" class="form-control" id="serviceInvocation" name="loginName"
+                       placeholder="http 或 eureka"/>-->
+                <div class="radio">
+                    <label>
+                        <input type="radio" name="serviceInvocation" value="eureka" checked="checked"/> Feign
+                    </label>
+                    <label>
+                        <input type="radio" name="serviceInvocation" value="http"/> Http
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="requestHost">Request Host</label>
+                <input type="text" class="form-control" id="requestHost" name="requestHost"
+                       placeholder="请输入请求主机地址+端口号..."/>
+            </div>
+
+            <div class="form-group">
+                <label for="contextPath">Context Path</label>
+                <input type="text" class="form-control" id="contextPath" name="contextPath" placeholder="请输入接口请求路径"/>
+            </div>
+            <div class="form-group">
+                <label for="sdkEntityFile">SDK Entity File</label>
+                <input type="file" id="sdkEntityFile" name="sdkFile"/>
+                <p class="help-block">提示：请按指定规则上传sdk请求响应实例，可后续上传。</p>
+            </div>
+            <div class="form-group">
+                <label for="documentFile">Document File</label>
+                <input type="file" id="documentFile" name="docFile"/>
+                <p class="help-block">提示：请按指定规则上传接口文档，可后续上传。</p>
+            </div>
+            <div class="text-center">
+                <button form="formRegister" type="button" onclick="register()" class="btn btn-success">注册</button>
+                <button type="reset" class="btn btn-danger">重置</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+<!-- common 的 定义好的 fotter模板引用  无参  -->
+<div class="container" th:replace="layout :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: admin-portal
+  cloud:
+    config:
+      discovery:
+        enabled: true
+        serviceId: config-server
+      profile: ${spring.profiles.active}
+      password: baiwang1234
+      username: user
+      label: master
+  http:
+    encoding:
+      force: true
+      charset: utf-8
+      enabled: true
+eureka:
+  instance:
+    prefer-ip-address: true
+    instance-id: ${spring.cloud.client.ipAddress}:${server.port}
+  client:
+    serviceUrl:
+      defaultZone: http://registerserver-pool.${DOMAIN}:8889/eureka
+server:
+  port: 18080
+
+logging:
+  level:
+    com.baiwang.admin.portal.mapper: debug

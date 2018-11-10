@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baiwang.admin.portal.mapper.MethodMapper">
+
+    <select id="selectMethodList" resultMap="methodMap" parameterType="string">
+        select bam.* from bop_admin_method bam join bop_admin_group bag
+        on bam.group_name = bag.group_name
+        <where>
+            bam.deleted = 0 and bag.deleted = 0
+            <if test='groupId != "" and groupId != null'>
+                and bag.group_id = #{groupId}
+            </if>
+        </where>
+        order by bam.create_time desc
+        <if test="start != null and start >= 0 ">
+            limit #{start,jdbcType=INTEGER},#{size,jdbcType=INTEGER}
+        </if>
+    </select>
+
+
+    <resultMap type="com.baiwang.admin.portal.bean.entity.Method" id="methodMap">
+        <id property="methodId" column="method_id"/>
+        <result property="method" column="method"/>
+        <result property="type" column="type"/>
+        <result property="serviceInvocation" column="service_invocation"/>
+        <result property="groupName" column="group_name"/>
+        <result property="description" column="description"/>
+        <result property="taxPropertyName" column="tax_property_name"/>
+        <result property="passedHeaders" column="passed_headers"/>
+        <result property="requestName" column="request_name"/>
+        <result property="responseName" column="response_name"/>
+        <result property="requestHost" column="request_host"/>
+        <result property="contextPath" column="context_path"/>
+        <result property="docUrl" column="doc_url"/>
+        <result property="status" column="status"/>
+        <result property="creator" column="creator"/>
+        <result property="auditor" column="auditor"/>
+        <result property="createTime" column="create_time"/>
+        <result property="auditTime" column="audit_time"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+    <select id="selectCountMethods" resultType="int" parameterType="string">
+        select count(bam.method_id) from bop_admin_method bam join bop_admin_group bag
+        on bam.group_name = bag.group_name
+        <where>
+            bam.deleted = 0 and bag.deleted = 0
+            <if test='groupId != "" and groupId != null'>
+                and bag.group_id = #{groupId}
+            </if>
+        </where>
+
+    </select>
+
+    <insert id="insertMethod" parameterType="Method">
+        insert into bop_admin_method (method, type, service_invocation, group_name, description, tax_property_name, passed_headers, request_name,
+        response_name,request_host, context_path, doc_url, status, creator, auditor, audit_time) values(#{method}, #{type},
+        #{serviceInvocation}, #{groupName}, #{description}, #{taxPropertyName}, #{passedHeaders}, #{requestName}, #{responseName},
+        #{requestHost}, #{contextPath}, #{docUrl}, #{status}, #{creator}, #{auditor}, #{auditTime})
+    </insert>
+
+    <select id="selectMethodById" resultMap="methodMap">
+        select * from bop_admin_method bam where bam.method_id = #{methodId} and deleted = 0;
+    </select>
+
+    <select id="selectMethodByName" resultMap="methodMap">
+        select * from bop_admin_method bam where bam.method = #{method} and deleted = 0;
+    </select>
+
+    <update id="updateMethod" parameterType="Method">
+        update bop_admin_method bam
+        <set>
+            <if test='method != null and method != ""'>
+                bam.method = #{method, jdbcType = VARCHAR}
+            </if>
+            <if test='type != null and type != ""'>
+                bam.type = #{type}
+            </if>
+            <if test='serviceInvocation != null and serviceInvocation != ""'>
+                bam.service_invocation = #{serviceInvocation}
+            </if>
+            <if test='groupName != null and groupName != ""'>
+                bam.group_name = #{groupName, jdbc = VARCHAR}
+            </if>
+            <if test='description != null and description != ""'>
+                bam.description = #{description, jdbcType = VARCHAR}
+            </if>
+            <if test='requestName != null and requestName != ""'>
+                bam.request_name = #{requestName, jdbcType = VARCHAR}
+            </if>
+            <if test='responseName != null and responseName != ""'>
+                bam.response_name = #{responseName, jdbcType = VARCHAR}
+            </if>
+            <if test='requestHost != null and requestHost != ""'>
+                bam.request_host = #{bam.requestHost, jdbcType = VARCHAR}
+            </if>
+            <if test='contextPath != null and contextPath != ""'>
+                bam.context_path = #{bam.contextPath, jdbcType = VARCHAR}
+            </if>
+            <if test='docUrl != null and docUrl != ""'>
+                bam.doc_url = #{docUrl, jdbcType = VARCHAR}
+            </if>
+            <if test='status != null and status != ""'>
+                bam.status = #{status, jdbcType = VARCHAR}
+            </if>
+        </set>
+        where bam.method_id = #{method_id} and bam.deleted = 0
+    </update>
+
+    <update id="deleteMethodById" parameterType="integer">
+        update bop_admin_method bam set bam.deleted = 1 where bam.method_id = #{methodId};
+    </update>
+
+</mapper>

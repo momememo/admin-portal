@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title> ISP </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8"/>
+    <!-- 引入 Bootstrap -->
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="shortcut icon" href="../static/favicon.ico" type="image/x-icon" />
+    <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+    <script src="../static/js/jquery-1.10.2.min.js"></script>
+    <script src="../static/js/bootstrap.js"></script>
+</head>
+<body>
+<div class="container">
+    <!--<div class="page-header">-->
+    <!--<h1>BaiWang Open Platform ISP System <small>hello</small></h1>-->
+    <!--</div>-->
+    <div class="page-header">
+        <h1>BaiWang Open Platform ISP System
+            <small>2018</small>
+        </h1>
+    </div>
+
+    <div class="row">
+
+
+        <div class="col-lg-12 jumbotron">
+            <h1>Login</h1>
+            <p>...</p>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a></p>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <form class="col-md-offset-5" action="/login" method="post">
+                    <div class="col-md-4">
+                        <input type="text" placeholder="username" class="form-control" name="loginName"
+                               autofocus="autofocus"/>
+                    </div>
+                    <div class="col-md-4">
+                        <input type="password" placeholder="password" class="form-control" name="loginPassword"/>
+                    </div>
+                    <div class="col-md-2">
+                        <input type="submit" class="form-control btn-primary button" value="Login"/>
+                    </div>
+                    <div class="col-md-2">
+                        <a href="/user/gotoAdd"><input id="register" type="button" value="Register"
+                                                       class="form-control btn-default button"/></a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <title> ISP </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../../static/css/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="shortcut icon" href="../../static/favicon.ico" type="image/x-icon" />
+    <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
+    <script src="../../static/js/jquery-1.10.2.min.js"></script>
+    <script src="../../static/js/bootstrap.js"></script>
+
+</head>
+<body>
+<div class="container" th:replace="layout :: header(username=${loginUser.username},roleId=${loginUser.roleId}) "></div>
+<div class="container">
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <label>欢迎,<span th:text="${loginUser.username}"></span>登录!</label>
+        </div>
+    </div>
+</div>
+
+<!-- common 的 定义好的 fotter模板引用  无参  -->
+<div class="container" th:replace="layout :: footer"></div>
+</body>
+</html>
