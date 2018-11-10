@@ -9,6 +9,7 @@
     <!-- jQuery (Bootstrap 的 JavaScript 插件需要引入 jQuery) -->
     <script src="../../static/js/jquery-1.10.2.min.js"></script>
     <script src="../../static/js/bootstrap.js"></script>
+    <script src="../../static/js/user/register.js"></script>
 
 </head>
 <body>
@@ -18,7 +19,7 @@
     </div>
 
     <div class="row">
-        <form class="col-md-6" action="/user/add" method="post">
+        <form id="formUserRegister" class="col-md-6" action="/user/add" method="post">
             <div class="form-group">
                 <label for="username">用户昵称</label>
                 <input type="text" class="form-control" id="username" name="username" placeholder="请输入用户昵称..."/>
@@ -32,10 +33,10 @@
                 <input type="password" class="form-control" id="password" name="loginPassword"
                        placeholder="请输入登录密码..."/>
             </div>
-            <div class="form-group">
-                <label for="password1">确认用户密码</label>
-                <input type="password" class="form-control" id="password1" placeholder="请确认登录密码..."/>
-            </div>
+            <!--<div class="form-group">-->
+                <!--<label for="password1">确认用户密码</label>-->
+                <!--<input type="password" class="form-control" id="password1" placeholder="请确认登录密码..."/>-->
+            <!--</div>-->
             <div class="form-group">
                 <label for="phone">联系电话</label>
                 <input type="text" class="form-control" id="phone" name="phone" placeholder="请输入联系电话..."/>
@@ -55,7 +56,7 @@
             <!--</label>-->
             <!--</div>-->
             <div class="text-center">
-                <button type="submit" class="btn btn-success">确认注册</button>
+                <button type="button" onclick="register()" class="btn btn-success">确认注册</button>
                 <button type="reset" class="btn btn-danger">重置</button>
             </div>
         </form>

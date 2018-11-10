@@ -1,6 +1,7 @@
 package com.baiwang.admin.portal.service;
 
 import com.baiwang.admin.portal.bean.entity.User;
+import com.baiwang.admin.portal.bean.result.Result;
 import java.util.List;
 
 public interface UserService {
@@ -15,7 +16,7 @@ public interface UserService {
      * 新增User
      * @param user
      */
-    void addUser(User user);
+    Result addUser(User user);
 
     /**
      * 根据id获取User

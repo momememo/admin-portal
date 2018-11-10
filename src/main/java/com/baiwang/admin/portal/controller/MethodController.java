@@ -2,18 +2,16 @@ package com.baiwang.admin.portal.controller;
 
 import com.baiwang.admin.portal.bean.entity.Method;
 import com.baiwang.admin.portal.bean.entity.User;
+import com.baiwang.admin.portal.bean.request.MethodAddRequest;
 import com.baiwang.admin.portal.bean.result.Result;
 import com.baiwang.admin.portal.common.util.WebSessionUtils;
 import com.baiwang.admin.portal.service.MethodService;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.BindingResultUtils;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -52,7 +50,7 @@ public class MethodController extends BaseController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public Result add(@Valid Method method, BindingResult bindingResult) {
+    public Result add(@Valid MethodAddRequest method, BindingResult bindingResult) {
         validateBindingResult(bindingResult);
         Result result = methodService.addMethod(method);
         return result;

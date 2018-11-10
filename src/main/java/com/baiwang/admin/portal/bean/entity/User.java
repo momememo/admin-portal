@@ -1,7 +1,6 @@
 package com.baiwang.admin.portal.bean.entity;
 
 import com.baiwang.admin.portal.bean.base.BaseEntity;
-import org.hibernate.validator.constraints.NotEmpty;
 
 /**
  * @Description:  用户bean
@@ -14,9 +13,7 @@ public class User extends BaseEntity {
     private String username;
     private String phone;
     private String email;
-    @NotEmpty(message = "登录用户名不能为空！")
     private String loginName;
-    @NotEmpty(message = "用户密码不能为空！")
     private String loginPassword;
     private Integer roleId;
     private Integer groupId;

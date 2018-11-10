@@ -14,7 +14,6 @@ public enum BopErrorEnum {
 
     BOP_UNKNOWN_ERROR("60", "未知系统异常"),
     BOP_APPSERVICE_ERROR("1001", "访问APP服务异常"),
-
     BOP_MISSING_PARAM("100000", "缺少参数"),
     BOP_INVALID_PARAM("100001", "参数取值范围错误"),
     BOP_INVALID_TOKEN("100002", "token错误"),
@@ -28,9 +27,10 @@ public enum BopErrorEnum {
     BOP_ERROR_INNER_TIMEOUT("100010", "系统超时"),
     BOP_ERROR_SESSION_EXPIRED("100011", "会话已过期，请重新登录"),
     BOP_ERROR_TOKEN_UNDETECTED("100012", "没有检测到token，请先获取token"),
-    BOP_INCORRECT_LOGIN_INFO("100013", "用户名密码错误！"),
-    BOP_INCORRECT_JESSIONID("100014", "没有找到JSESSIONID！"),
-    BOP_DUPLICATE_METHOD_NAME("100015", "重复的method名称！");
+    BOP_INCORRECT_LOGIN_INFO("100013", "用户名密码错误"),
+    BOP_INCORRECT_JESSIONID("100014", "没有找到JSESSIONID"),
+    BOP_DUPLICATE_METHOD_NAME("100015", "重复的method名称"),
+    BOP_LOGIN_NAME_REGISTERED("100016", "该用户登录账号已经被注册");
 
     private String msg;
     private String code;

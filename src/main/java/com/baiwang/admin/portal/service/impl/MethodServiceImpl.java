@@ -119,6 +119,7 @@ public class MethodServiceImpl implements MethodService {
 
     /**
      * 接口列表
+     *
      * @param index
      * @param model
      */
@@ -129,16 +130,18 @@ public class MethodServiceImpl implements MethodService {
         int count = 0;
         User user = WebSessionUtils.getUserInfo();
         Integer roleId = user.getRoleId();
-        if (roleId == 1) {
-            Integer start = (index - 1) * SIZE;
-            count = methodMapper.selectCountMethods(null);
-            methods = methodMapper.selectMethodList(null, start, SIZE);
-        } else {
-            Role role = roleMapper.selectRoleById(roleId.toString());
-            if (role != null) {
-                Integer groupId = user.getGroupId();
-                methods = methodMapper.selectMethodList(groupId.toString(), index, SIZE);
-                count = methodMapper.selectCountMethods(groupId.toString());
+        if (roleId != null) {
+            if (roleId == 1) {
+                Integer start = (index - 1) * SIZE;
+                count = methodMapper.selectCountMethods(null);
+                methods = methodMapper.selectMethodList(null, start, SIZE);
+            } else {
+                Role role = roleMapper.selectRoleById(roleId.toString());
+                if (role != null) {
+                    Integer groupId = user.getGroupId();
+                    methods = methodMapper.selectMethodList(groupId.toString(), index, SIZE);
+                    count = methodMapper.selectCountMethods(groupId.toString());
+                }
             }
         }
         Integer total = count % SIZE == 0 ? count / SIZE : (count / SIZE) + 1;

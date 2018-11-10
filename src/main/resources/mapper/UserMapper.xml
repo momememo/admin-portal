@@ -28,6 +28,10 @@
         select * from bop_admin_user bau where bau.user_id = #{userId} and bau.deleted = 0;
     </select>
 
+    <select id="selectUserByLoginName" resultMap="userMap" parameterType="string">
+        select * from bop_admin_user bau where bau.login_name = #{loginName} and bau.deleted = 0;
+    </select>
+
     <update id="updateUser" parameterType="User">
         update bop_admin_role bau
         <set>
@@ -60,8 +64,5 @@
         update bop_admin_user bau set bau.deleted = 1 where bau.user_id = #{userId};
     </update>
 
-    <select id="selectUserByLoginName" resultMap="userMap" parameterType="string">
-        select * from bop_admin_user bau where bau.login_name = #{loginName} and bau.deleted = 0;
-    </select>
 
 </mapper>

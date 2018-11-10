@@ -3,16 +3,20 @@ package com.baiwang.admin.portal.controller;
 import com.baiwang.admin.portal.bean.entity.Group;
 import com.baiwang.admin.portal.bean.entity.Role;
 import com.baiwang.admin.portal.bean.entity.User;
+import com.baiwang.admin.portal.bean.request.UserAddRequest;
+import com.baiwang.admin.portal.bean.result.Result;
 import com.baiwang.admin.portal.common.util.RequestUtil;
 import com.baiwang.admin.portal.service.GroupService;
 import com.baiwang.admin.portal.service.RoleService;
 import com.baiwang.admin.portal.service.UserService;
 import java.util.List;
+import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -62,10 +66,12 @@ public class UserController extends BaseController {
         return "user/register";
     }
 
+    @ResponseBody
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String add(User user) {
-        userService.addUser(user);
-        return "";
+    public Result add(@Valid UserAddRequest user, BindingResult bindingResult) {
+        validateBindingResult(bindingResult);
+        Result result =userService.addUser(user);
+        return result;
     }
 
     @RequestMapping(value = "/gotoUpdate", method = RequestMethod.POST)
