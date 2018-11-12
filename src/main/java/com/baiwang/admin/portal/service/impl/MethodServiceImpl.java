@@ -97,10 +97,21 @@ public class MethodServiceImpl implements MethodService {
      * @param method
      */
     @Override
-    public void updateMethod(Method method) {
+    public Result updateMethod(Method method) {
         String requestId = RequestUtil.getRequestId();
         log.info("{} -->update method : {}", requestId, method);
+        Method dbMethod = methodMapper.selectMethodById(method.getMethodId().toString());
+        dbMethod.setRequestType(method.getRequestType());
+        dbMethod.setStatus(method.getStatus());
+        dbMethod.setMethod(method.getMethod());
+        dbMethod.setGroupName(dbMethod.getGroupName());
+        dbMethod.setRequestHost(method.getRequestHost());
+        dbMethod.setContextPath(method.getContextPath());
+        dbMethod.setDescription(dbMethod.getDescription());
+        dbMethod.setPassedHeaders(dbMethod.getPassedHeaders());
+        dbMethod.setTaxPropertyName(dbMethod.getTaxPropertyName());
         methodMapper.updateMethod(method);
+        return ResultBuilder.newResult().setRequestId(requestId).buildSuccess();
     }
 
     /**
@@ -172,9 +183,10 @@ public class MethodServiceImpl implements MethodService {
         User user = WebSessionUtils.getUserInfo();
         Method method = methodMapper.selectMethodById(methodId);
         log.info("{} --> goto update method, result", JacksonUtil.beanToString(method));
+        List<Group> groups = groupMapper.selectGroupList();
         model.addAttribute("loginUser", user);
         model.addAttribute("method", method);
-        model.addAttribute("type222", "post");
+        model.addAttribute("groups", groups);
     }
 
     /**

@@ -29,7 +29,7 @@
             </tr>
             <tr th:each="method : ${methods}">
                 <td th:text="${method.method}"></td>
-                <td th:text="${method.type}"></td>
+                <td th:text="${method.requestType}"></td>
                 <td th:text="${method.serviceInvocation}"></td>
                 <td th:text="${method.groupName}"></td>
                 <td th:text="${method.status} == 1 ? 审核通过:审核中"></td>

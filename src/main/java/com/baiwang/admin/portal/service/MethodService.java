@@ -19,7 +19,7 @@ public interface MethodService {
      * 更新method
      * @param method
      */
-    void updateMethod(Method method);
+    Result updateMethod(Method method);
 
     /**
      * 删除接口

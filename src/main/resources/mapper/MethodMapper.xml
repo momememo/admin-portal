@@ -21,7 +21,7 @@
     <resultMap type="com.baiwang.admin.portal.bean.entity.Method" id="methodMap">
         <id property="methodId" column="method_id"/>
         <result property="method" column="method"/>
-        <result property="type" column="type"/>
+        <result property="requestType" column="request_type"/>
         <result property="serviceInvocation" column="service_invocation"/>
         <result property="groupName" column="group_name"/>
         <result property="description" column="description"/>
@@ -53,8 +53,8 @@
     </select>
 
     <insert id="insertMethod" parameterType="Method">
-        insert into bop_admin_method (method, type, service_invocation, group_name, description, tax_property_name, passed_headers, request_name,
-        response_name,request_host, context_path, doc_url, status, creator, auditor, audit_time) values(#{method}, #{type},
+        insert into bop_admin_method (method, request_type, service_invocation, group_name, description, tax_property_name, passed_headers, request_name,
+        response_name,request_host, context_path, doc_url, status, creator, auditor, audit_time) values(#{method}, #{requestType},
         #{serviceInvocation}, #{groupName}, #{description}, #{taxPropertyName}, #{passedHeaders}, #{requestName}, #{responseName},
         #{requestHost}, #{contextPath}, #{docUrl}, #{status}, #{creator}, #{auditor}, #{auditTime})
     </insert>
@@ -73,10 +73,13 @@
             <if test='method != null and method != ""'>
                 bam.method = #{method, jdbcType = VARCHAR}
             </if>
-            <if test='type != null and type != ""'>
-                bam.type = #{type}
+            <if test='requestType != null and requestType != ""'>
+                bam.requestType = #{requestType}
             </if>
             <if test='serviceInvocation != null and serviceInvocation != ""'>
+                bam.service_invocation = #{serviceInvocation}
+            </if>
+            <if test='passedHeaders != null and passedHeaders != ""'>
                 bam.service_invocation = #{serviceInvocation}
             </if>
             <if test='groupName != null and groupName != ""'>

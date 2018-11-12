@@ -14,7 +14,7 @@ public class Method extends BaseEntity {
 
     private Integer methodId; // id
     private String method; // 接口名称
-    private String type; // 请求类型
+    private String requestType; // 请求类型
     private String serviceInvocation; // 调用方式
     private String groupName; // 分组
     private String description; // 接口描述
@@ -55,12 +55,12 @@ public class Method extends BaseEntity {
         this.method = method;
     }
 
-    public String getType() {
-        return type;
+    public String getRequestType() {
+        return requestType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
     }
 
     public String getServiceInvocation() {
@@ -236,7 +236,7 @@ public class Method extends BaseEntity {
         return "Method{" +
                 "methodId=" + methodId +
                 ", method='" + method + '\'' +
-                ", type='" + type + '\'' +
+                ", requestType='" + requestType + '\'' +
                 ", serviceInvocation='" + serviceInvocation + '\'' +
                 ", groupName='" + groupName + '\'' +
                 ", description='" + description + '\'' +

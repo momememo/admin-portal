@@ -3,6 +3,7 @@ package com.baiwang.admin.portal.controller;
 import com.baiwang.admin.portal.bean.entity.Method;
 import com.baiwang.admin.portal.bean.entity.User;
 import com.baiwang.admin.portal.bean.request.MethodAddRequest;
+import com.baiwang.admin.portal.bean.request.MethodUpdateRequest;
 import com.baiwang.admin.portal.bean.result.Result;
 import com.baiwang.admin.portal.common.util.WebSessionUtils;
 import com.baiwang.admin.portal.service.MethodService;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 /**
  * @Description: 接口控制器
@@ -24,6 +27,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 @RequestMapping("method")
+//@SessionAttributes("method")
 public class MethodController extends BaseController {
 
     /**
@@ -63,10 +67,12 @@ public class MethodController extends BaseController {
         return "method/update";
     }
 
+    @ResponseBody
     @RequestMapping(value = "/update", method = RequestMethod.PUT)
-    public String update(Method method) {
-        methodService.updateMethod(method);
-        return "";
+    public Result update(@Valid MethodUpdateRequest method, BindingResult bindingResult) {
+        validateBindingResult(bindingResult);
+        Result result = methodService.updateMethod(method);
+        return result;
     }
 
     @RequestMapping(value = "/delete/{methodId}", method = RequestMethod.DELETE)
